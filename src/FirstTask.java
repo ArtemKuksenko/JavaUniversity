@@ -2,7 +2,7 @@
 import java.util.*;
 import java.lang.String;
 
-public class Main {
+public class FirstTask {
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);
