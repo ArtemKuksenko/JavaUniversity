@@ -18,7 +18,27 @@ public class University {
         Student studentKuksenko = new Student("Artem","Kuksenko",234);
         Student studentVyatkina = new Student("Alena","Vyatkina",345);
 
+        Group group12 = new Group(12, 1);
+        group12.addStudent(studentIvanov);
+        group12.addStudent(studentPupkin);
 
+
+        Group group42 = new Group(42, 4);
+        group42.addStudent(studentKuksenko);
+        group42.addStudent(studentKuksenko);
+
+        Teacher teacherEgorov = new Teacher("Robert","Egorov","Professor");
+        Teacher teacherKazakov = new Teacher("Anton","Kazakov","Professor");
+        Teacher teacherKornilov = new Teacher("Filipp","Kornilov","Professor");
+
+        Discipline math = new Discipline("math",80,teacherEgorov);
+        math.addTeacher(teacherKazakov);
+
+        Discipline java = new Discipline("java programming",50,teacherEgorov);
+        Discipline web = new Discipline("web programming",50,teacherKazakov);
+        Discipline prolog = new Discipline("swi prolog",50,teacherEgorov);
+        Discipline history = new Discipline("history",40,teacherKornilov);
+        Discipline economy = new Discipline("economy",40,teacherKornilov);
 
         in.close();
     }
@@ -54,7 +74,7 @@ class Student extends Person {
         this.number = number;
     }
 
-    public void PassSession() {
+    public void passSession() {
         if (studying) {
             this.semester++;
             this.course = this.semester / 2;
@@ -75,7 +95,7 @@ class Student extends Person {
         }
     }
 
-    public void EnteryMagistr() {
+    public void enteryMagistr() {
         if (this.grade == "Выпускник магистратуры"){
             this.studying = true;
             this.course = 1;
@@ -87,14 +107,16 @@ class Student extends Person {
 
 class Group{
     private int number;
+    private int course;
     private HashSet<Student> students = new HashSet<Student>();
-    Group(int number) {
+    Group(int number, int course) {
         this.number = number;
+        this.course = course;
     }
-    public void AddStudent(Student student) {
+    public void addStudent(Student student) {
         this.students.add(student);
     }
-    public void RemoveStudent(Student student) {
+    public void removeStudent(Student student) {
         this.students.remove(student);
     }
 }
