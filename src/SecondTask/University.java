@@ -1,4 +1,6 @@
 package SecondTask;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Scanner;
 
@@ -31,14 +33,42 @@ public class University {
         Teacher teacherKazakov = new Teacher("Anton","Kazakov","Professor");
         Teacher teacherKornilov = new Teacher("Filipp","Kornilov","Professor");
 
-        Discipline math = new Discipline("math",80,teacherEgorov);
-        math.addTeacher(teacherKazakov);
+        Discipline mathDisp = new Discipline("math",80,teacherEgorov);
+        mathDisp.addTeacher(teacherKazakov);
 
-        Discipline java = new Discipline("java programming",50,teacherEgorov);
-        Discipline web = new Discipline("web programming",50,teacherKazakov);
-        Discipline prolog = new Discipline("swi prolog",50,teacherEgorov);
-        Discipline history = new Discipline("history",40,teacherKornilov);
-        Discipline economy = new Discipline("economy",40,teacherKornilov);
+        Discipline javaDisp = new Discipline("java programming",50,teacherEgorov);
+        Discipline webDisp = new Discipline("web programming",50,teacherKazakov);
+        Discipline prologDisp = new Discipline("swi prolog",50,teacherEgorov);
+        Discipline historyDisp = new Discipline("history",40,teacherKornilov);
+        Discipline economyDisp = new Discipline("economy",40,teacherKornilov);
+
+        Lesson mathLessn = new Lesson(teacherEgorov,mathDisp,group12);
+        Lesson historyLessn = new Lesson(teacherKornilov,historyDisp,group12);
+        Lesson economyLessn = new Lesson(teacherKornilov,economyDisp,group12);
+
+        Lesson javaLessn = new Lesson(teacherEgorov,javaDisp,group42);
+        Lesson webLessn = new Lesson(teacherKazakov,webDisp,group42);
+        Lesson prologLessn = new Lesson(teacherEgorov,prologDisp,group42);
+
+        Day monday = new Day(1);
+        monday.addLesson(1,"a305",mathLessn);
+        monday.addLesson(2,"a305",historyLessn);
+        monday.addLesson(3,"a305",economyLessn);
+        monday.addLesson(4,"a305",historyLessn);
+
+        monday.addLesson(1,"131",webLessn);
+        monday.addLesson(2,"131",prologLessn);
+        monday.addLesson(3,"131",javaLessn);
+
+        Day tuesday = new Day(2);
+        tuesday.addLesson(4,"a305",mathLessn);
+        tuesday.addLesson(3,"a305",historyLessn);
+        tuesday.addLesson(2,"a305",economyLessn);
+        tuesday.addLesson(1,"a305",historyLessn);
+
+        tuesday.addLesson(4,"131",webLessn);
+        tuesday.addLesson(3,"131",prologLessn);
+        tuesday.addLesson(2,"131",javaLessn);
 
         in.close();
     }
@@ -142,14 +172,10 @@ class Discipline {
 }
 
 class Lesson {
-    private int number;
-    private String classRoom;
     private Teacher teacher;
     private Discipline discipline;
     private Group group;
-    Lesson(int number, String classRoom, Teacher teacher, Discipline discipline, Group group) {
-        this.number = number;
-        this.classRoom = classRoom;
+    Lesson(Teacher teacher, Discipline discipline, Group group) {
         this.teacher = teacher;
         this.discipline = discipline;
         this.group = group;
@@ -157,25 +183,28 @@ class Lesson {
 }
 
 class Day {
-    private Lesson[] lessons = new Lesson[Const.countLessonsPeerDay];
+    private HashMap <String,Lesson>[] lessons = new HashMap[Const.countLessonsPeerDay];
     private int number;
 
     Day(int number) {
         this.number = number;
     }
 
-    public void addLesson(int number,Lesson lesson) {
-        this.lessons[number] = lesson;
+    public void addLesson(int number, String classRoom, Lesson lesson) {
+        this.lessons[number].put(classRoom, lesson);
     }
 
-    public void removeLesson(int number) {
-        this.lessons[number] = null;
+    public void removeLesson(int number, String classRoom) {
+        this.lessons[number].remove(classRoom);
     }
 }
 
 class Shedule {
     private Day[] shedule = new Day[12];
-    Shedule(int number, Day day) {
+    Shedule(){};
+
+    public void addDay(int number, Day day) {
         this.shedule[number] = day;
     }
+
 }
