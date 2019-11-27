@@ -74,8 +74,12 @@ public class University {
         shedule.addDay(1,monday);
         shedule.addDay(2,tuesday);
 
-        System.out.println("Получить расписание по учителю");
-        monday.giveLessonByTeacher(teacherEgorov);
+        System.out.println("Получить расписание по учителю за понедельник");
+//        monday.giveLessonByTeacher(teacherEgorov);
+        shedule.getTeacherSheduleAtDay(1,teacherEgorov);
+        System.out.println("Получить расписание по студенту за понедельник");
+//        monday.giveLessonByStudent(studentKuksenko);
+        shedule.getStudentSheduleAtDay(1,studentKuksenko);
 
         in.close();
     }
@@ -166,6 +170,7 @@ class Group{
         this.students.remove(student);
         student.setGroup(-1);
     }
+    public int getNumber() {return this.number;}
 }
 
 class Discipline {
@@ -178,6 +183,8 @@ class Discipline {
         this.count = count;
         this.students.add(teacher);
     }
+
+    public String getName() {return this.name;}
 
     public void addTeacher(Teacher teacher) {
         this.students.add(teacher);
@@ -198,6 +205,10 @@ class Lesson {
         this.group = group;
     }
 
+    public Group getGroup() {
+        return this.group;
+    }
+    public String getTitleLesson(){ return this.discipline.getName(); }
     public Teacher getTeacher() {
         return this.teacher;
     }
@@ -221,17 +232,19 @@ class Day {
 
     public void giveLessonByTeacher(Teacher teacher) {
         for (int i = 0; i < Const.countLessonsPeerDay; i++) {
-            System.out.println(i);
             if( lessons[i] != null)
                 for (HashMap.Entry entry : lessons[i].entrySet()) {
-                    System.out.println(entry.getValue());
-//                    Lesson l = entry.getValue();
-//                    if (l.getTeacher() == teacher) {
+                    Lesson l = (Lesson) entry.getValue();
+                    if (l.getTeacher() == teacher) {
                         System.out.print("Урок: - ");
                         System.out.println(i);
                         System.out.print("Аудитория: - ");
                         System.out.println(entry.getKey());
-//                    }
+                        System.out.print("Группа: - ");
+                        System.out.println(l.getGroup().getNumber());
+                        System.out.print("Предмет: - ");
+                        System.out.println(l.getTitleLesson());
+                    }
                 }
         }
     }
@@ -239,17 +252,18 @@ class Day {
     public void giveLessonByStudent(Student student) {
         int group = student.getGroup();
         for (int i = 0; i < Const.countLessonsPeerDay; i++) {
-            System.out.println(i);
             if( lessons[i] != null)
                 for (HashMap.Entry entry : lessons[i].entrySet()) {
-                    System.out.println(entry.getValue());
-//                    Lesson l = entry.getValue();
-//                    if (l.getGroup() == group) {
-                    System.out.print("Урок: - ");
-                    System.out.println(i);
-                    System.out.print("Аудитория: - ");
-                    System.out.println(entry.getKey());
-//                    }
+                    Lesson l = (Lesson) entry.getValue();
+                    if (l.getGroup().getNumber() == group) {
+                        System.out.print("Урок: - ");
+                        System.out.println(i);
+                        System.out.print("Аудитория: - ");
+                        System.out.println(entry.getKey());
+                        System.out.print("Аудитория: - ");
+                        System.out.print("Предмет: - ");
+                        System.out.println(l.getTitleLesson());
+                    }
                 }
         }
     }
@@ -258,7 +272,6 @@ class Day {
         this.lessons[number].remove(classRoom);
     }
 
-//    public void getLessons()
 }
 
 class Shedule {
@@ -267,6 +280,20 @@ class Shedule {
 
     public void addDay(int number, Day day) {
         this.shedule[number] = day;
+    }
+
+    public void getTeacherSheduleAtDay(int day, Teacher teacher) {
+        if (this.shedule[day] == null )
+            System.out.println("Нет расписания на данный день");
+        else
+            this.shedule[day].giveLessonByTeacher(teacher);
+    }
+
+    public void getStudentSheduleAtDay(int day, Student student) {
+        if (this.shedule[day] == null )
+            System.out.println("Нет расписания на данный день");
+        else
+            this.shedule[day].giveLessonByStudent(student);
     }
 
 }
