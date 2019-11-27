@@ -70,6 +70,13 @@ public class University {
         tuesday.addLesson(3,"131",prologLessn);
         tuesday.addLesson(2,"131",javaLessn);
 
+        Shedule shedule = new Shedule();
+        shedule.addDay(1,monday);
+        shedule.addDay(2,tuesday);
+
+        System.out.println("Получить расписание по учителю");
+        monday.giveLessonByTeacher(teacherEgorov);
+
         in.close();
     }
 }
@@ -98,10 +105,18 @@ class Student extends Person {
     private String grade = "Бакалавр";
     private boolean studying = true;
     private int number;
+    private int group;
 
     Student(String name, String surname, int number) {
         super(name, surname);
         this.number = number;
+    }
+
+    public void setGroup(int group) {
+        this.group = group;
+    }
+    public int getGroup() {
+        return  this.group;
     }
 
     public void passSession() {
@@ -145,9 +160,11 @@ class Group{
     }
     public void addStudent(Student student) {
         this.students.add(student);
+        student.setGroup(this.number);
     }
     public void removeStudent(Student student) {
         this.students.remove(student);
+        student.setGroup(-1);
     }
 }
 
@@ -180,7 +197,14 @@ class Lesson {
         this.discipline = discipline;
         this.group = group;
     }
+
+    public Teacher getTeacher() {
+        return this.teacher;
+    }
+
 }
+
+
 
 class Day {
     private HashMap <String,Lesson>[] lessons = new HashMap[Const.countLessonsPeerDay];
@@ -191,12 +215,50 @@ class Day {
     }
 
     public void addLesson(int number, String classRoom, Lesson lesson) {
+        this.lessons[number] = new HashMap <String,Lesson>();
         this.lessons[number].put(classRoom, lesson);
+    }
+
+    public void giveLessonByTeacher(Teacher teacher) {
+        for (int i = 0; i < Const.countLessonsPeerDay; i++) {
+            System.out.println(i);
+            if( lessons[i] != null)
+                for (HashMap.Entry entry : lessons[i].entrySet()) {
+                    System.out.println(entry.getValue());
+//                    Lesson l = entry.getValue();
+//                    if (l.getTeacher() == teacher) {
+                        System.out.print("Урок: - ");
+                        System.out.println(i);
+                        System.out.print("Аудитория: - ");
+                        System.out.println(entry.getKey());
+//                    }
+                }
+        }
+    }
+
+    public void giveLessonByStudent(Student student) {
+        int group = student.getGroup();
+        for (int i = 0; i < Const.countLessonsPeerDay; i++) {
+            System.out.println(i);
+            if( lessons[i] != null)
+                for (HashMap.Entry entry : lessons[i].entrySet()) {
+                    System.out.println(entry.getValue());
+//                    Lesson l = entry.getValue();
+//                    if (l.getGroup() == group) {
+                    System.out.print("Урок: - ");
+                    System.out.println(i);
+                    System.out.print("Аудитория: - ");
+                    System.out.println(entry.getKey());
+//                    }
+                }
+        }
     }
 
     public void removeLesson(int number, String classRoom) {
         this.lessons[number].remove(classRoom);
     }
+
+//    public void getLessons()
 }
 
 class Shedule {
