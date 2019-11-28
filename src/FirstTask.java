@@ -3,6 +3,7 @@ import java.util.*;
 import java.lang.String;
 
 public class FirstTask {
+    //Обьект, который посчитает
 
     public static void main(String[] args) {
         Scanner in = new Scanner(System.in);

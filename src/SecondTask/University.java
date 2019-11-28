@@ -221,7 +221,7 @@ class Day {
     private HashMap <String,Lesson>[] lessons = new HashMap[Const.countLessonsPeerDay];
     private int number;
 
-    Day(int number) {
+    public Day(int number) {
         this.number = number;
     }
 
@@ -260,7 +260,6 @@ class Day {
                         System.out.println(i);
                         System.out.print("Аудитория: - ");
                         System.out.println(entry.getKey());
-                        System.out.print("Аудитория: - ");
                         System.out.print("Предмет: - ");
                         System.out.println(l.getTitleLesson());
                     }
